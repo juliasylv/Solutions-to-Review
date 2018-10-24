@@ -49,17 +49,11 @@ public class NameOfGame
      *  useable: lamp
      */
     static boolean oilLamp;
-    static boolean oilLampOn;
+    static boolean oilLampOn; // Is the lamp on or off?
     
     // Keep track of the turns taken by player:
     static int turnsTaken;
-    
-    // key
-    
-    // knife
-    
-    
-    
+
     // End of field variables
 
     /** Prompts the user to play game or quit.
@@ -92,7 +86,7 @@ public class NameOfGame
     }
 
     /** Displays the introduction to the game.  Includes any instructions you may want to give
-     *  the user.
+     *  the user when beginning the game.
      */
     public static void displayIntro()
     {
@@ -131,6 +125,78 @@ public class NameOfGame
             }
         }
     }
+    
+        /** @param direction - the direction the player wants to go.
+     * 
+     *  @return true if the player's chosen direction is allowed from their current location,
+     *          false otherwise.
+     */
+    public static boolean canMove( String direction )
+    {
+        switch( currentRoom )
+        {
+            case 1: // Can only move north from this room
+            {
+                if(direction.equals("n") || direction.equals("north") )
+                    return true;
+                else
+                    return false;
+            }
+            case 2: // Can only move south from this room
+            {
+                if(direction.equals("s") || direction.equals("south"))
+                    return true;
+                else
+                    return false;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
+    
+        /** 'Move' command
+     * 
+     * Moves the player in a given direction.
+     * 
+     * @param direction - the direction the player wants to go.
+     */
+    public static void move(String direction)
+    {
+        if( canMove(direction) )
+        {
+            switch(currentRoom)
+            {
+                case 1: // starting room
+                {
+                    if( direction.equals("n") || direction.equals("north") )
+                    {
+                        currentRoom = 2;
+                    }
+                    break;
+                }
+                case 2: // cave entrance
+                {
+                    if( direction.equals("s") || direction.equals("south") )
+                    {
+                        currentRoom = 1;
+                    }
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            System.out.println("You cannot move in that direction.");
+        }
+        
+        displayCurrentRoom();
+    }
 
     /** Displays all items in player's inventory.
      */
@@ -149,7 +215,7 @@ public class NameOfGame
         }
     }
 
-    /** Initializes static variables
+    /** Initializes static variabdisplayCurrentRoomles
      */
     public static void init()
     {
@@ -240,6 +306,12 @@ public class NameOfGame
                     break;
                 }
                 
+                case "use":
+                {
+                    useItem();
+                    break;
+                }
+                
                 case "quit":
                 {
                     menu = false;
@@ -257,80 +329,6 @@ public class NameOfGame
             System.out.println(); // print a space between attempted actions
 
         }while( menu );
-    }
-
-    /** 'Move' command
-     * 
-     * Moves the player in a given direction.
-     * 
-     * @param direction - the direction the player wants to go.
-     */
-    public static void move(String direction)
-    {
-        if( canMove(direction) )
-        {
-            switch(currentRoom)
-            {
-                case 1: // starting room
-                {
-                    if( direction.equals("n") || direction.equals("north") )
-                    {
-                        currentRoom = 2;
-                    }
-                    
-                    break;
-                }
-                case 2: // cave entrance
-                {
-                    if( direction.equals("s") || direction.equals("south") )
-                    {
-                        currentRoom = 1;
-                    }
-                    
-                    break;
-                }
-                default:
-                {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            System.out.println("You cannot move in that direction.");
-        }
-        
-        displayCurrentRoom();
-    }
-
-    /** @param direction - the direction the player wants to go.
-     * 
-     *  @return true if the player's chosen direction is allowed from their current location,
-     *          false otherwise.
-     */
-    public static boolean canMove( String direction )
-    {
-        switch( currentRoom )
-        {
-            case 1: // Can only move north from this room
-            {
-                if(direction.equals("n") || direction.equals("north"))
-                    return true;
-                else
-                    return false;
-            }
-            case 2: // Can only move south from this room
-            {
-                if(direction.equals("s") || direction.equals("south"))
-                    return true;
-                else
-                    return false;
-            }
-            default:
-            {
-                return false;
-            }
-        }
     }
 
     /** 'Take' command
